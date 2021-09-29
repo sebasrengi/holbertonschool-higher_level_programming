@@ -2,13 +2,11 @@
 """
 Defines a class Rectangle
 """
+
+
 class Rectangle:
     """Representation of a rectangle"""
-
-    @property
-    def width(self):
-        """getter for the private instance attribute width"""
-         def __init__(self, width=0, height=0):
+    def __init__(self, width=0, height=0):
         """Initializes the rectangle"""
         self.height = height
         self.width = width
@@ -17,6 +15,7 @@ class Rectangle:
     def width(self):
         """getter for the private instance attribute width"""
         return self.__width
+
     @width.setter
     def width(self, value):
         """setter for the private instance attribute width"""
