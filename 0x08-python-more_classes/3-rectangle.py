@@ -6,7 +6,7 @@ Defines a class Rectangle
 
 class Rectangle:
     """Representation of a rectangle"""
-    def __init__(self, width=5, height=5):
+    def __init__(self, width=0, height=0):
         """Initializes the rectangle"""
         self.width = width
         self.height = height
@@ -48,6 +48,7 @@ class Rectangle:
         if self.__width == 0 or self.__height == 0:
             return 0
         return (self.__width * 2) + (self.__height * 2)
+
     def __str__(self):
         """returns printable string representation of the rectangle"""
         string = ""
@@ -55,5 +56,3 @@ class Rectangle:
             string += "\n".join("#" * self.__width
                                 for j in range(self.__height))
         return string
-
-
