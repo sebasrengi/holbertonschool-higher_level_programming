@@ -8,8 +8,8 @@ class Rectangle:
     """Representation of a rectangle"""
     def __init__(self, width=0, height=0):
         """Initializes the rectangle"""
-        self.height = height
         self.width = width
+        self.height = height
 
     @property
     def width(self):
@@ -42,6 +42,7 @@ class Rectangle:
     def area(self):
         """returns the area of the rectangle"""
         return self.__width * self.__height
+
     def perimeter(self):
         """returns the perimeter of the rectangle"""
         if self.__width == 0 or self.__height == 0:
