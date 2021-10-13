@@ -4,7 +4,9 @@ Contains the function "append_wrtie"
 """
 
 
-def append_write(filename="", text=""):
-    """returns the number of chars appended to "filename" from "text" """
-    with open(filename, 'a', encoding='utf=8') as f:
-        return f.write(text)
+import json
+
+
+def from_json_string(my_str):
+    """returns an object represented by a JSON string"""
+    return json.loads(my_str)
