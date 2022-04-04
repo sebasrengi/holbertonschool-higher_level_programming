@@ -1,8 +1,8 @@
 #!/usr/bin/node
-const path= process.argv[2];
+const path= process.argv;
 
-if (path === undefined) {
+if (path[2] === undefined) {
     console.log('No argument');
 } else {
-    console.log(path);
+    console.log(path[2]);
 }
