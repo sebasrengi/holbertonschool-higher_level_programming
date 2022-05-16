@@ -1,36 +1,24 @@
 #!/usr/bin/python3
-"""
-python script that lists all states from the database hbtn_0e_0_usa
-"""
+"""Start link class to table in database"""
 
+
+import sys
 from model_state import Base, State
-from sys import argv
-from sqlalchemy import (create_engine)
 from sqlalchemy.orm import sessionmaker
-
-
-def connection():
-    """Connection to database"""
-    try:
-        engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'.
-                               format(
-                                   argv[1], argv[2],
-                                   argv[3]), pool_pre_ping=True)
-        Base.metadata.create_all(engine)
-    except Exception:
-        print("Can't connect to DB")
-        return 0
-
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    state = session.query(State).filter_by(name=argv[4]).first()
-    if state is not None:
-        print(state.id)
-    else:
-        print("Not found")
-    session.close()
+from sqlalchemy import (create_engine)
 
 
 if __name__ == "__main__":
-    connection()
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
+                           .format(sys.argv[1], sys.argv[2],
+                                   sys.argv[3]), pool_pre_ping=True)
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(engine)
+    session = Session()
+    id_state = session.query(State).filter(State.name.like(
+        '%s' % (sys.argv[4], ))).first()
+    if id_state is None:
+        print("Not found")
+    else:
+        print(id_state.id)
+    session.close()
