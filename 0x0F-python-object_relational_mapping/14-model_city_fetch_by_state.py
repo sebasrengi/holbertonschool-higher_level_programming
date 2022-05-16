@@ -1,35 +1,28 @@
 #!/usr/bin/python3
 """
-prints all City objects from a database
+Script that lists all State objects from the database
 """
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sys import argv
 from model_state import Base, State
 from model_city import City
-
-
-def connection():
-    """Connection to database"""
-    try:
-        engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'.
-                               format(
-                                   argv[1], argv[2],
-                                   argv[3]), pool_pre_ping=True)
-        Base.metadata.create_all(engine)
-    except Exception:
-        print("Can't connect to DB")
-        return 0
-
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    for state, city in session.query(State, City).\
-            filter(City.state_id == State.id).order_by(City.id).all():
-        print("{}: ({}) {}".format(state.name, city.id, city.name))
-
-    session.close()
-
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine
 
 if __name__ == "__main__":
-    connection()
+
+    user = argv[1]
+    password = argv[2]
+    database = argv[3]
+
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format
+                           (user, password, database), pool_pre_ping=True)
+    Base.metadata.create_all(engine)
+
+    session = Session(engine)
+    new_table = session.query(City, State)\
+        .filter(City.state_id == State.id)\
+        .order_by(City.id.asc()).all()
+    for cities, states in new_table:
+        print("{}: ({}) {}".format(states.name, cities.id, cities.name))
+    session.close()
