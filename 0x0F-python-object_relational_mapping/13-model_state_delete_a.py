@@ -1,36 +1,18 @@
 #!/usr/bin/python3
+"""Start link class to table in database
 """
-python script that lists all states from the database hbtn_0e_0_usa
-"""
-
+import sys
+from sqlalchemy.orm import Session
 from model_state import Base, State
-from sys import argv
 from sqlalchemy import (create_engine)
-from sqlalchemy.orm import sessionmaker
-
-
-def connection():
-    """Connection to database"""
-    try:
-        engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'.
-                               format(
-                                   argv[1], argv[2],
-                                   argv[3]), pool_pre_ping=True)
-        Base.metadata.create_all(engine)
-    except Exception:
-        print("Can't connect to DB")
-        return 0
-
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    for state in session.query(State).all():
-        if 'a' in state.name:
-            session.delete(state)
-
-    session.commit()
-    session.close()
-
 
 if __name__ == "__main__":
-    connection()
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
+                           .format(sys.argv[1], sys.argv[2], sys.argv[3]),
+                           pool_pre_ping=True)
+    Base.metadata.create_all(engine)
+    sesionCRUD = Session(engine)
+    for state in sesionCRUD.query(State).filter(State.name.like('%a%')).all():
+        sesionCRUD.delete(state)
+    sesionCRUD.commit()
+    sesionCRUD.close()
