@@ -5,13 +5,13 @@ find peak of list of unsorted numbers
 
 
 def find_peak(list_of_integers):
-    """"find_peak"""
-    long = len(list_of_integers)
-
-    if not list_of_integers:
-        return None
-
-    return function(list_of_integers, 0, long - 1)
+    """BRUTE force implementation for question
+    """
+    max_i = None
+    for ele in list_of_integers:
+        if max_i is None or max_i < ele:
+            max_i = ele
+    return max_i
 
 
 def function(list, start, end):
