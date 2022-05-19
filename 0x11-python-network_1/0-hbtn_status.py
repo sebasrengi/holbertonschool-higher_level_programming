@@ -1,31 +1,18 @@
 #!/usr/bin/python3
-"""For a given employee ID, returns information about
-their TODO list progress"""
+"""Fetches the URL: https://intranet.hbtn.io/status
+"""
 
+from urllib.request import Request, urlopen
 
-import sys
-import urllib.request
 
 if __name__ == "__main__":
+    req = Request('https://intranet.hbtn.io/status')
 
-    userId = sys.argv[1]
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                        .format(userId))
+    with urlopen(req) as res:
+        content = res.read()
+        utf8_content = content.decode('utf-8')
 
-    name = user.json().get('name')
-
-    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
-    totalTasks = 0
-    completed = 0
-
-    for task in todos.json():
-        if task.get('userId') == int(userId):
-            totalTasks += 1
-            if task.get('completed'):
-                completed += 1
-
-    print('Employee {} is done with tasks({}/{}):'
-          .format(name, completed, totalTasks))
-
-    print('\n'.join(["\t " + task.get('title') for task in todos.json()
-          if task.get('userId') == int(userId) and task.get('completed')]))
+        print('Body response:')
+        print('\t- type: {_type}'.format(_type=type(content)))
+        print('\t- content: {_content}'.format(_content=content))
+        print('\t- utf8 content: {_utf8_c}'.format(_utf8_c=utf8_content))
